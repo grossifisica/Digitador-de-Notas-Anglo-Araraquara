@@ -101,7 +101,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-white tracking-tight">
-                Digitador de Notas Anglo Araraquara
+                Digitador de Notas
               </h1>
               <p className="text-xs text-slate-400">
                 Criado por Prof. Pedro Grossi
