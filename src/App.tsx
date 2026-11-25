@@ -4,16 +4,14 @@ import {
   AutomationSettings 
 } from './types';
 import { 
-  generatePythonScript,
   generateWindowsVbsScript,
-  generateBookmarkletCode,
   downloadFile 
 } from './utils/scriptGenerators';
 import { SettingsSliders } from './components/SettingsSliders';
 import { GradeTable } from './components/GradeTable';
 import { PasteModal } from './components/PasteModal';
 import { DesktopExportModal } from './components/DesktopExportModal';
-import { Terminal, Download, Check, Copy, Flame, Monitor, Keyboard } from 'lucide-react';
+import { Download, Flame, Monitor, Keyboard } from 'lucide-react';
 
 const DEFAULT_SETTINGS: AutomationSettings = {
   initialDelay: 3,         // 3 seconds default
@@ -30,7 +28,6 @@ export default function App() {
 
   const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-  const [copiedBookmarklet, setCopiedBookmarklet] = useState(false);
 
   const activeGrades = grades.filter((g) => g.grade.trim() !== '');
 
@@ -74,20 +71,6 @@ export default function App() {
   const handleDownloadWindowsVbs = () => {
     const script = generateWindowsVbsScript(grades, settings);
     downloadFile(script, 'digitar_notas_windows.vbs', 'text/plain;charset=utf-8');
-  };
-
-  // Python Script (.py)
-  const handleDownloadPython = () => {
-    const script = generatePythonScript(grades, settings);
-    downloadFile(script, 'digitar_notas.py', 'text/x-python;charset=utf-8');
-  };
-
-  // Copy Bookmarklet
-  const handleCopyBookmarklet = () => {
-    const code = generateBookmarkletCode(grades, settings);
-    navigator.clipboard.writeText(code);
-    setCopiedBookmarklet(true);
-    setTimeout(() => setCopiedBookmarklet(false), 2500);
   };
 
   return (
@@ -181,32 +164,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* SECONDARY ROW: PYTHON & WEB INJECTOR */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-            <span>Outras formas de automação:</span>
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                type="button"
-                onClick={handleDownloadPython}
-                disabled={grades.length === 0}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium flex items-center gap-1.5 transition-colors disabled:opacity-40"
-              >
-                <Terminal className="w-3.5 h-3.5 text-amber-400" />
-                <span>Script Python (.py)</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleCopyBookmarklet}
-                disabled={grades.length === 0}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium flex items-center gap-1.5 transition-colors disabled:opacity-40"
-                title="Copiar código para colar no console do seu portal escolar ou salvar nos favoritos"
-              >
-                {copiedBookmarklet ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-indigo-400" />}
-                <span>{copiedBookmarklet ? 'Injetor Copiado!' : 'Injetor Portal Web'}</span>
-              </button>
-            </div>
-          </div>
         </div>
       </main>
 
